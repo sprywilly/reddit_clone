@@ -1,1 +1,26 @@
-<a class="navbar-brand" href="/">Главная</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Главная</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+              {% if user.is_authenticated %}
+          <ul id="nav" class="nav navbar-nav navbar-right">
+            <li><a href="#">Привет,&nbsp;{{ user.username }}</a>
+              <ul>
+                <li ><a href="/home/">Мой кабинет</a></li>
+                <li ><a href="/logout/">Выход</a></li>
+              </ul>
+            </li>
+          </ul>
+          {% else %}
+          <ul id="nav" class="nav navbar-nav navbar-right">
+            <li ><a href="/login/">Вход</a></li>
+            <li> <div id="divider">|</div> </li>
+            <li ><a href="/registration/">Регистрация</a></li>
+          </ul>
+          {% endif %}
+  </div>
+</nav>

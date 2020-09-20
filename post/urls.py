@@ -1,4 +1,4 @@
-"""reddit_clone URL Configuration
+"""reddit_clone post URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
@@ -20,4 +20,5 @@ from . import views
 
 urlpatterns = [
     path('', views.post_list, name='post_list'),
+    path('post/<int:post_id>/', views.post_detail, name='post_detail'),
 ]

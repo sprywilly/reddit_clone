@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+
+        <h3>{{ post.name }}</h3>
+        <hr>
+        {{ post.created }} by <h6>{{ post.author}}</h6>
+        <p>{{ post.text }}</p>
+
+
+
+
+    {% endblock %}

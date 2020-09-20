@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+
+<ul>
+  <h4>Основная информация</h4>
+  <h5>{{ user.get_full_name }}</h5>
+  <li>Username: {{ user.username }}</li>
+  <li>Phone: {{ user.profile.phone }}</li>
+  <li>Bio: {{ user.profile.bio }}</li>
+</ul>
+
+{% endblock %}

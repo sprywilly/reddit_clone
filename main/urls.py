@@ -1,4 +1,4 @@
-"""reddit_clone URL Configuration
+"""reddit_clone main URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
@@ -14,16 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from django.conf.urls import url
-from django.conf import settings
-from django.conf.urls.static import static
+from django.urls import path
+from . import views
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    url(r'^', include('post.urls')),
-    url(r'^', include('main.urls')),
-] \
-    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
-    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+    path('login/', views.user_login, name='login'),
+    path('logout/', views.user_logout, name='logout'),
+    path('registration/', views.registration, name='registration'),
+    path('home/', views.update_profile, name='update_profile'),
+    path('profile/<int:user_id>/', views.get_profile, name='get_profile'),
+]
