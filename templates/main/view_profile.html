@@ -1,17 +1,37 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}Просмотр профиля{% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Основная информация:</h2>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Полное имя: {{ profile.user.get_full_name|default:"Не указано" }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">День рождения: {{ profile.birthday|default:"Не указан" }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Телефон: {{ profile.phone|default:"Не указан" }}</h6>
+                <p class="card-text">{{ profile.about_me }}</p>
+              </div>
+            </div>
 
-    <ul>
-      <h4>Основная информация</h4>
-      <h5>{{ user.get_full_name }}</h5>
-      <li>Имя пользователя: {{ user.username }}</li>
-      <li>Телефон: {{ user.profile.phone }}</li>
-      <li>Биография: {{ user.profile.bio }}</li>
-    <h4>Посты пользователя:</h4>
-    {% for post in posts %}
-     <li><a href="/posts/{{ post.id }}">{{ post.name }}</a></li>
-      {% endfor %}
-    </ul>
+            <hr>
+            <h4>Посты пользователя:</h4>
+            {% for post in posts %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ post.name }}</h4>
+                        <p class="card-text">{{ post.text|truncatewords:20|linebreaks }}</p>
+                        <a href="/post/{{ post.id }}" class="btn btn-primary">Читать дальше &rarr;</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                    Опубликовано: {{ post.created }}
+                    </div>
+                </div>
+            {% endfor %}
+           
+        </div>
+    </div>
+</div>
 {% endblock %}

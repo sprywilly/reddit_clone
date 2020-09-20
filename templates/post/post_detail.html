@@ -1,35 +1,72 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}Просмотр статьи{% endblock %}
 
 {% block content %}
+  <!-- Page Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+      <h1 class="mt-4">{{ post.name }}</h1>
+        <p class="lead">
+          {{ post.created }} 
+          {% if post.author != None %}
+          Автор: 
+          <a href="/profile/{{ post.author.id}}">{{ post.author}}</a>
+          {% endif %}
+        </p>
 
-    <h3>{{ post.name }}</h3>
-    <hr>
-    {{ post.created }} by <h6><a href="/profile/{{ post.author.id}}">{{ post.author}}</a></h6>
-    <p>{{ post.text }}</p>
+        <hr>
 
-    <form method="post" action="{% url 'post:post_detail' post.id %}">
-      {% csrf_token %}
-      {{ comment_form.user_comment }}
-      <button type="submit">Добавить комментарий</button>
-    </form>
-    <hr>
-    {% load mptt_tags %}
-    {% recursetree comments %}
-    <p>{{ node.date_added }}</p>
-    <p>{{ node.user_comment }}</p>
-        <form method="post" action="{% url 'post:post_detail' post.id %}">
-        {% csrf_token %}
-        {{ comment_form.user_comment }}
-        <input type="hidden" name="comment_id" value="{{ node.id }}">
-        <button type="submit">Ответить</button>
-        </form>
-    {% if not node.is_leaf_node %}
-      <div style="padding-left: 20px">
-      {{ children }}
+
+
+      <p class="lead">{{ post.text }}</p>
+
+        <hr>
+
+        <!-- Comments Form -->
+        <div class="card my-4">
+          <h5 class="card-header">Оставьте комментарий:</h5>
+          <div class="card-body">
+            <form method="post" action="{% url 'post:post_detail' post.id %}">{% csrf_token %}
+              <div class="form-group">
+                
+                <input class="form-control form-control-sm" type="text" name="user_comment"></input >
+               
+              </div>
+              <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+            </form>
+          </div>
+        </div>
+
+      <hr>
+
+
+      {% load mptt_tags %}
+      {% recursetree comments %}
+      <div class="media mt-4">
+        <div class="media-body">
+          <h5 class="mt-0">{{ node.date_added }}</h5>
+          <p>{{ node.user_comment }}</p>
+        </div>
       </div>
-    {% endif %}
-    {% endrecursetree %}
+
+          <form method="post" action="{% url 'post:post_detail' post.id %}">
+          {% csrf_token %}
+          {{ comment_form.user_comment }}
+          <input class="form-control form-control-sm" type="hidden" name="comment_id" value="{{ node.id }}">
+          <button type="submit" class="btn btn-primary">Ответить</button>
+          </form>
+
+      {% if not node.is_leaf_node %}
+        <div style="padding-left: 20px">
+        {{ children }}
+        </div>
+      {% endif %}
+      {% endrecursetree %}
+    </div>
+  </div>
+</div>
 
 
 {% endblock %}

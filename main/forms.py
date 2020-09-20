@@ -8,8 +8,8 @@ from .models import Profile
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))
 
     def clean(self):
         if 'password' not in self.cleaned_data and 'username' not in self.cleaned_data:
@@ -33,12 +33,15 @@ class LoginForm(forms.Form):
 class RegistrationForm(forms.ModelForm):
     username = forms.RegexField(regex=r'^[a-zA-Z0-9 \w._]+$',max_length=30,min_length = 6,
         help_text = ("Имя пользоваетля может содержать только буквы и должно быть не менее 6 символов и не более 30"),
-        error_messages={'invalid': ("Имя пользователя может содержать только буквы")})
-    password = forms.CharField(label='Пароль', min_length = 8,widget=forms.PasswordInput, 
+        error_messages={'invalid': ("Имя пользователя может содержать только буквы")},
+        widget=forms.TextInput(attrs={"class": "form-control"}))
+    password = forms.CharField(label='Пароль', min_length = 8,
+        widget=forms.PasswordInput(attrs={"class": "form-control"}), 
                                 error_messages={'required': 'Укажите пароль'})
-    password2 = forms.CharField(label='Повторите пароль', min_length = 8,widget=forms.PasswordInput,
+    password2 = forms.CharField(label='Повторите пароль', min_length = 8,
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
                                 error_messages={'required': 'Укажите пароль еще раз'})
-
+    
     class Meta:
         model = User
         fields = ('username', 'first_name', 'email')

@@ -6,9 +6,13 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    about_me = models.TextField()
-    birthday = models.DateField(null=True, blank=True)
+    about_me = models.TextField(blank=True, null=True)
+    birthday = models.DateField(blank=True, null=True)
     phone = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили пользователей'
 
     def __str__(self):
         return self.user.username

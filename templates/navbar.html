@@ -1,31 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">Главная</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/post/add/">Добавить пост <span class="sr-only">(current)</span></a>
-      </li>
-
-    </ul>
-              {% if user.is_authenticated %}
-          <ul id="nav" class="nav navbar-nav navbar-right">
-            <li><a href="#">Привет,&nbsp;{{ user.username }}</a>
-              <ul>
-                <li ><a href="/home/">Мой кабинет</a></li>
-                <li ><a href="/logout/">Выход</a></li>
-              </ul>
-            </li>
-          </ul>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">Главная</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/post/add/">Добавить пост
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="/home/">Мой кабинет</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout/">Выход</a>
+          </li>
           {% else %}
-          <ul id="nav" class="nav navbar-nav navbar-right">
-            <li ><a href="/login/">Вход</a></li>
-            <li> <div id="divider">|</div> </li>
-            <li ><a href="/registration/">Регистрация</a></li>
-          </ul>
+          <li class="nav-item">
+            <a class="nav-link" href="/login/">Вход</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/registration/">Регистрация</a>
+          </li>
           {% endif %}
-  </div>
-</nav>
+        </ul>
+      </div>
+    </div>
+  </nav>

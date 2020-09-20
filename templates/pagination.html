@@ -1,15 +1,25 @@
-<div class="pagination">
-    <span class="step-links">
-        {% if page.has_previous %}
-            <a href="?page={{ page.previous_page_number }}">Предыдущая</a>
-        {% endif %}
-        
-        <span class="current">
-            Страница {{ page.number }} из {{ page.paginator.num_pages }}.
-        </span>
-       
-        {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}">Следующая</a>
-        {% endif %}
-    </span>
-</div>
+{% if page.has_other_pages %}
+  <ul class="pagination justify-content-left mb-4">
+    {% if page.has_previous %}
+      <li><a class="page-link" href="?page={{ page.previous_page_number }}">Предыдущая</a></li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Предыдущая</a>
+    </li>
+    {% endif %}
+    {% for i in page.paginator.page_range %}
+      {% if page.number == i %}
+        <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page.has_next %}
+      <li><a class="page-link" href="?page={{ page.next_page_number }}">Следующая</a></li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Следующая</a>
+    </li>
+    {% endif %}
+  </ul>
+{% endif %}

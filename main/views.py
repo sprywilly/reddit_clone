@@ -7,6 +7,7 @@ from django.contrib import messages
 from .errors import nice_errors
 from .models import Profile
 from .forms import *
+from post.models import Post
 
 
 def user_login(request):
@@ -59,8 +60,8 @@ def update_profile(request):
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, instance=request.user.profile)
         if user_form.is_valid() and profile_form.is_valid():
-            user_form.save(commit=False)
-            profile_form.save(commit=False)
+            user_form.save()
+            profile_form.save()
             messages.success(request, 'профиль успешно обновлен')
         else:
             messages.error(request, 'ошибка при обновлении профиля')
@@ -75,5 +76,7 @@ def update_profile(request):
 
 
 def get_profile(request, user_id):
-    profile = Profile.objects.get(id=user_id)
-    return render(request, 'main/view_profile.html', {'profile': profile})
+    profile = Profile.objects.get(user__id=user_id)
+    print(profile.phone)
+    posts = Post.objects.filter(author__id =user_id)
+    return render(request, 'main/view_profile.html', locals())

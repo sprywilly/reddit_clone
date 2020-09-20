@@ -1,10 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}Добавление статьи{% endblock %}
 
 {% block content %}
-    <form action="." method="post"> {% csrf_token %}
-        {{ post_form.name }}
-        {{ post_form.text }}
-        <p><input type="submit" value="Опубликовать"></p>
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="." method="post"> {% csrf_token %}
+                <div class="form-group">
+                    <label for="inputName">Введите название статьи: </label>
+                    {{ post_form.name }}
+                </div>
+                <div class="form-group">
+                    <label for="textarea">Введите текст статьи: </label>
+                    {{ post_form.text }}                  
+                </div>
+                <button type="submit" class="btn btn-primary" value="Опубликовать">Опубликовать</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

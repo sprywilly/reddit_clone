@@ -1,36 +1,51 @@
 {% extends "base.html" %}
 {% block title %}Вход в аккаунт{% endblock %}
-{% block content %}
-    <h1>Вход в аккаунт</h1>
-    
-        <p>Используйте форму для входа в аккаунт:</p>
-    <div class="login-form">
-        <form action="{% url 'login' %}" method="post">
-            <p>{{ form.username }}</p>
-            <p>{{ form.password }} </p>
-            
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}"/>
-            <p><input type="submit" value="Войти"></p>
-        </form>
-    </div>
 
-        {% if login_error %}        
-       
-            {% with login_error as qq %} 
-            {% if not qq.items %}
-                {{ qq }}
-            {%else%}
-                {% for error_name,desc in qq.items %} 
-                    {% if error_name == None%}
-                        {{ desc }}
-                    {% else %}
-                        { error_name }}: {{ desc }}
-                    {% endif %}
-                {% endfor %} 
-            {%endif%}
-            {% endwith %} 
-         
-        {% endif %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+                     
+            <h2>Вход в аккаунт</h2>        
+            <p >Используйте форму для входа в аккаунт:</p>
+                
+            <div class="login-form">
+                <form action="{% url 'login' %}" method="post">{% csrf_token %}
+                    <div class="form-group row">
+                        <label for="inputName" class="col-sm-2 col-form-label">Имя пользователя:</label>
+                        <div class="col-sm-4">
+                            {{ form.username }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Пароль:</label>
+                        <div class="col-sm-4">
+                            {{ form.password }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </form>
+            </div>
+            <br>
+            {% if login_error %}
+            <div class="alert alert-warning col-sm-6" role="alert">
+                {% with login_error as qq %} 
+                {% if not qq.items %}
+                    {{ qq }}
+                {%else%}
+                    {% for error_name,desc in qq.items %} 
+                        {% if error_name == None%}
+                            {{ desc }}
+                        {% else %}
+                            {{ error_name }}: {{ desc }}
+                        {% endif %}
+                    {% endfor %} 
+                {%endif%}
+                {% endwith %} 
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
    
 {% endblock %}

@@ -1,21 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}Главная-все статьи{% endblock %}
 
 {% block content %}
-  <div class="container">
-      <div class="row">
-          <div class="col-lg-12">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
             {% for post in posts %}
-              <h4>
-                <a href="/post/{{ post.id }}">{{ post.name }}</a>  
-              {{ post.text|truncatewords:30|linebreaks }}
-
-              Опубликовано: {{ post.created }}
-              {{ post.author }}
+            <!-- Blog Post -->
+            <div class="card mb-4">
+              
+              <div class="card-body">
+                <h2 class="card-title">{{ post.name }}</h2>
+                <p class="card-text">{{ post.text|truncatewords:30|linebreaks }}</p>
+                <a href="/post/{{ post.id }}" class="btn btn-primary">Читать дальше &rarr;</a>
+              </div>
+              <div class="card-footer text-muted">
+                Опубликовано: {{ post.created }}
+                {% if post.author != None %}
+                <a href="/profile/{{ post.author.id }}">{{ post.author }}</a>
+                {% endif %}
+              </div>
+            </div>
             {% endfor %}
-          </div>
+            {% include "pagination.html" with page=posts %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
 
-      </div>
-  </div>
-  {% include "pagination.html" with page=posts %}
-{% endblock %}
+
