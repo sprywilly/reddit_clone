@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
-    {% block content %}
+{% block content %}
 
-<ul>
-  <h4>Основная информация</h4>
-  <h5>{{ user.get_full_name }}</h5>
-  <li>Username: {{ user.username }}</li>
-  <li>Phone: {{ user.profile.phone }}</li>
-  <li>Bio: {{ user.profile.bio }}</li>
-</ul>
-
+    <ul>
+      <h4>Основная информация</h4>
+      <h5>{{ user.get_full_name }}</h5>
+      <li>Имя пользователя: {{ user.username }}</li>
+      <li>Телефон: {{ user.profile.phone }}</li>
+      <li>Биография: {{ user.profile.bio }}</li>
+    <h4>Посты пользователя:</h4>
+    {% for post in posts %}
+     <li><a href="/posts/{{ post.id }}">{{ post.name }}</a></li>
+      {% endfor %}
+    </ul>
 {% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <form action="." method="post"> {% csrf_token %}
+        {{ post_form.name }}
+        {{ post_form.text }}
+        <p><input type="submit" value="Опубликовать"></p>
+    </form>
+{% endblock %}

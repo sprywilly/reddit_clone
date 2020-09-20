@@ -1,14 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
 
-    {% block content %}
+{% block content %}
 
-        <h3>{{ post.name }}</h3>
-        <hr>
-        {{ post.created }} by <h6>{{ post.author}}</h6>
-        <p>{{ post.text }}</p>
+    <h3>{{ post.name }}</h3>
+    <hr>
+    {{ post.created }} by <h6><a href="/profile/{{ post.author.id}}">{{ post.author}}</a></h6>
+    <p>{{ post.text }}</p>
+
+    <form method="post" action="{% url 'post:post_detail' post.id %}">
+      {% csrf_token %}
+      {{ comment_form.user_comment }}
+      <button type="submit">Добавить комментарий</button>
+    </form>
+    <hr>
+    {% load mptt_tags %}
+    {% recursetree comments %}
+    <p>{{ node.date_added }}</p>
+    <p>{{ node.user_comment }}</p>
+        <form method="post" action="{% url 'post:post_detail' post.id %}">
+        {% csrf_token %}
+        {{ comment_form.user_comment }}
+        <input type="hidden" name="comment_id" value="{{ node.id }}">
+        <button type="submit">Ответить</button>
+        </form>
+    {% if not node.is_leaf_node %}
+      <div style="padding-left: 20px">
+      {{ children }}
+      </div>
+    {% endif %}
+    {% endrecursetree %}
 
 
-
-
-    {% endblock %}
+{% endblock %}

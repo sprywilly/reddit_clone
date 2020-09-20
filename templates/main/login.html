@@ -2,29 +2,35 @@
 {% block title %}Вход в аккаунт{% endblock %}
 {% block content %}
     <h1>Вход в аккаунт</h1>
-    {% if form.errors %}
-        <p>
-            Имя и пароль не совпадают, попробуйте еще раз.
-        </p>
-    {% else %}
+    
         <p>Используйте форму для входа в аккаунт:</p>
-    {% endif %}
     <div class="login-form">
         <form action="{% url 'login' %}" method="post">
-            {{ form.as_p }}
+            <p>{{ form.username }}</p>
+            <p>{{ form.password }} </p>
+            
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}"/>
             <p><input type="submit" value="Войти"></p>
         </form>
     </div>
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">
-                {{ message|safe }}
-                <a href="#" class="close">✖</a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
+
+        {% if login_error %}        
+       
+            {% with login_error as qq %} 
+            {% if not qq.items %}
+                {{ qq }}
+            {%else%}
+                {% for error_name,desc in qq.items %} 
+                    {% if error_name == None%}
+                        {{ desc }}
+                    {% else %}
+                        { error_name }}: {{ desc }}
+                    {% endif %}
+                {% endfor %} 
+            {%endif%}
+            {% endwith %} 
+         
+        {% endif %}
+   
 {% endblock %}

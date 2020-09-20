@@ -5,7 +5,12 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/post/add/">Добавить пост <span class="sr-only">(current)</span></a>
+      </li>
 
+    </ul>
               {% if user.is_authenticated %}
           <ul id="nav" class="nav navbar-nav navbar-right">
             <li><a href="#">Привет,&nbsp;{{ user.username }}</a>

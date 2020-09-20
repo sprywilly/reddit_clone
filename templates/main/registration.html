@@ -5,9 +5,31 @@
 {% block content %}
     <h1>Cоздание аккаунта</h1>
     <p>Пожалуйста заполните поля ниже:</p>
-    <form action="." method="post">
-        {{ user_form.as_p }}
-        {% csrf_token %}
+    <form action="." method="post">{% csrf_token %}
+       
+        <p>Имя пользователя: {{ user_form.username}}</p>
+        <p>Пароль: {{ user_form.password}}</p>
+        <p>Подтверждение пароля: {{ user_form.password2}}</p>
+
         <p><input type="submit" value="Создать аккаунт"></p>
     </form>
+
+    {% if reg_error %}
+       <h5>Ошибка</h5>
+        {% with reg_error as qq %} 
+        {% if not qq.items %}
+            {{ qq }}
+        {%else%}
+            {% for error_name,desc in qq.items %} 
+                {% if error_name == None%}
+                    {{ desc }}
+                {% else %}
+                    {{ error_name }}: {{ desc }}
+                {% endif %}
+            {% endfor %} 
+        {%endif%}
+        {% endwith %} 
+         
+    {% endif %}
+
 {% endblock %}
