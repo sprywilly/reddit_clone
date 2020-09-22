@@ -42,7 +42,7 @@
 
       <hr>
 
-      {% cache 500 comments %}
+      {% cache 10 comments %}
       {% load mptt_tags %}
       {% recursetree comments %}
       <div class="media mt-4">

@@ -20,8 +20,6 @@ app_name = 'post'
 
 urlpatterns = [
     path('', views.PostListView.as_view(), name='post_list'),
-    #path('', views.post_list, name='post_list'),
-    path('post/<int:post_id>/', views.post_detail, name='post_detail'),
+    path('post/<int:post_id>/', views.DetailPostView.as_view(), name='post_detail'),
     path('post/add/', views.CreatePost.as_view(), name='post_add'),
-    #path('post/add/', views.post_add, name='post_add')
 ]

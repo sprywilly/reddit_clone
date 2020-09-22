@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.contrib import messages
 #rom django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic import ListView
+from django.views.generic.edit import FormView
 
 from .models import Post, Comment
 from .forms import CommentForm, AddPostForm
@@ -43,16 +42,28 @@ class CreatePost(FormView):
         return redirect(self.get_success_url())
 
 
-def post_detail(request, post_id):
+class DetailPostView(FormView):
+    """
+    Представление отдельной статьи и добавления комментариев
+    """
+    template_name = 'post/post_detail.html'
+    form_class = CommentForm
 
-    post = get_object_or_404(Post, id=post_id)
-    comments = Comment.objects.filter(post__id=post_id, approved=True)
 
-    if request.method != 'POST':
-        comment_form = CommentForm()
+    def get(self, request,  *args, **kwargs):
+        post = get_object_or_404(Post, id=self.kwargs['post_id'])
+        context = {}
+        context['comment_form'] = self.form_class     
+        context['post'] = post       
+        context['comments'] = Comment.objects.filter(post__id=post.id, approved=True)
 
-    else:
-        comment_form = CommentForm(data=request.POST)
+        return render(request, template_name=self.template_name, context=context)
+
+
+    def post(self, request, *args, **kwargs):
+        comment_form = CommentForm(data=request.POST)     
+        post = get_object_or_404(Post, id=self.kwargs['post_id'])
+        comments = Comment.objects.filter(post__id=post.id, approved=True)
         parent_id = None
         try:
             parent_id = request.POST['comment_id']
@@ -72,12 +83,4 @@ def post_detail(request, post_id):
                 comment.author = None
 
             comment.save()
-            return HttpResponseRedirect(reverse('post:post_detail', args=[post_id]))
-
-    context = {
-        'post': post,
-        'comment_form': comment_form,
-        'comments': comments, }
-
-    return render(request, 'post/post_detail.html', context)
-
+            return HttpResponseRedirect(reverse('post:post_detail', args=[post.id]))
