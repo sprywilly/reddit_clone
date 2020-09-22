@@ -75,5 +75,31 @@
     </ul>
 </div>  
 {% endif %}
+
+{% if upd_error %}
+            <div class="alert alert-warning col-sm-6" role="alert">
+                {% with upd_error as qq %} 
+                {% if not qq.items %}
+                    {{ qq }}
+                {%else%}
+                    {% for error_name,desc in qq.items %} 
+                        
+                        {% if error_name == None%}
+                            
+                                {{ desc }}   
+                                                
+                        {% else %}
+                            
+                                {{ error_name }}: {{ desc }}
+                            
+                        {% endif %}
+                        
+                    {% endfor %} 
+                {%endif%}
+                {% endwith %} 
+            </div>  
+            {% endif %}
+
+            
 {% endblock %}
 

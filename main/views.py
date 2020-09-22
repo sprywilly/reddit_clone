@@ -1,8 +1,9 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, Http404, get_object_or_404
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.generic import UpdateView
 
 from .errors import nice_errors
 from .models import Profile
@@ -10,6 +11,7 @@ from .forms import *
 from post.models import Post
 
 
+# Авторизация
 def user_login(request):
     login_error = ""
     if request.method == 'POST':
@@ -29,6 +31,7 @@ def user_login(request):
     return render(request, 'main/login.html', {'form': form, 'login_error': login_error})
 
 
+# Регистрация
 def registration(request):
     reg_error = ""
     if request.method == 'POST':
@@ -49,13 +52,16 @@ def registration(request):
     return render(request, 'main/registration.html', {'user_form': user_form, 'reg_error': reg_error})
 
 
+# Выход из системы
 def user_logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
 
 
+# Обновление профиля
 @login_required
 def update_profile(request):
+    upd_error = ''
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, instance=request.user.profile)
@@ -64,17 +70,19 @@ def update_profile(request):
             profile_form.save()
             messages.success(request, 'профиль успешно обновлен')
         else:
-            messages.error(request, 'ошибка при обновлении профиля')
+            upd_error = nice_errors(profile_form)
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
 
     return render(request, 'main/edit_profile.html', {
         'user_form': user_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'upd_error': upd_error,
     })
 
 
+# Просмотр профиля
 def get_profile(request, user_id):
     profile = Profile.objects.get(user__id=user_id)
     print(profile.phone)

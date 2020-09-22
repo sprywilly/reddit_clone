@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load cache %}
 {% block title %}Просмотр статьи{% endblock %}
 
 {% block content %}
@@ -41,7 +42,7 @@
 
       <hr>
 
-
+      {% cache 500 comments %}
       {% load mptt_tags %}
       {% recursetree comments %}
       <div class="media mt-4">
@@ -64,6 +65,7 @@
         </div>
       {% endif %}
       {% endrecursetree %}
+      {% endcache %}
     </div>
   </div>
 </div>
